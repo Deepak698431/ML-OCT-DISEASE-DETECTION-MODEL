@@ -1,0 +1,14 @@
+
+
+# Ignore large files
+*.csv
+*.jpeg
+*.zip
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore virtual environment
+venv/
+.env

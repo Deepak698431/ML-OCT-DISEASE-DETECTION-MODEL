@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OCT AI Classifier</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+    .file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Hide default input */
+#fileInput {
+    display: none;
+}
+
+/* Custom button */
+.custom-file-btn {
+    padding: 12px 25px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.custom-file-btn:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #0072ff, #00c6ff);
+}
+
+/* File name text */
+#file-name {
+    font-size: 14px;
+    color: #ddd;
+}
+    .card {
+        background: rgba(255,255,255,0.05);
+        border-radius: 25px;
+        padding: 40px;
+        width: 600px;
+        text-align: center;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 0 40px rgba(0,0,0,0.6);
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 60px rgba(0,0,0,0.8);
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    input[type="file"] {
+        margin: 20px 0;
+        color: white;
+    }
+
+    .btn {
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    border: none;
+    padding: 14px 30px;
+    border-radius: 50px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 81, 47, 0.6);
+}
+
+.preview{
+    margin: 12px;
+    display: flex;
+    justify-content: center;
+}
+ .preview-placeholder{
+    margin: 5px;
+ }
+.preview-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.preview-image {
+    width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 81, 47, 0.9);
+}
+
+    .preview {
+        margin-top: 15px;
+    }
+
+    img {
+        width: 180px;
+        border-radius: 15px;
+        margin-top: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    .result {
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #00ffcc;
+    }
+    #fileInput{
+        padding :5px;
+        /* margin:   5px; */
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>👁️ OCT AI Classifier</h1>
+
+    <form action="/predict" method="post" enctype="multipart/form-data">
+    <div class="file-upload">
+        <input type="file" name="file" id="fileInput" required>
+        
+        <label for="fileInput" class="custom-file-btn">
+            📁 Choose OCT Image
+        </label>
+
+        <span id="file-name">No file chosen</span>
+    </div>
+
+<!-- <p id="fileName">No file selected</p> -->
+        <br>
+<button class="btn" type="submit" onclick="this.innerText='Predicting...'">
+    🚀 Predict
+</button>
+</form>
+
+<!-- Preview -->
+<div class="preview-container">
+    {% if image_data %}
+        <img class="previewimage" id="previewImage"
+             src="data:image/jpeg;base64,{{ image_data }}">
+    {% else %}
+        <p class="preview-placeholder">No image selected</p>
+    {% endif %}
+</div>
+
+
+<!-- Prediction -->
+{% if prediction %}
+<div class="result">
+    Prediction: {{ prediction }}
+</div>
+{% endif %}
+
+<!-- AI Recommendation -->
+{% if recommendation %}
+<div class="recommendation">
+    💡 {{ recommendation }}
+</div>
+{% endif %}
+</div>
+
+</div>
+
+<script>
+    const fileInput = document.getElementById("fileInput");
+    const previewImage = document.getElementById("previewImage");
+
+    fileInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+                previewImage.style.display = "block";
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+    document.getElementById("fileInput").addEventListener("change", function() {
+    const fileName = this.files[0]?.name || "No file chosen";
+    document.getElementById("file-name").textContent = fileName;
+});
+</script>
+
+</body>
+</html>
