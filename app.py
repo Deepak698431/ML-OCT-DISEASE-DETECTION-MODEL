@@ -8,7 +8,7 @@ from io import BytesIO
 
 import requests
 
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = "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"
 
 def generate_recommendation(disease):
     prompt = f"""
