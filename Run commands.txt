@@ -1,0 +1,9 @@
+In Anakconda prompt - 
+conda env list 
+
+conda activate tensorflow_env
+
+cd C:\Users\Deepa\Documents\ML Project OCT Scan\Dataset - train+val+test
+
+
+python app.py
